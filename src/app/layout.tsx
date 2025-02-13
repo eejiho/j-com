@@ -3,7 +3,7 @@ import { ReactNode } from "react"
 import "./globals.css";
 import styles from './page.module.css';
 
-type Props = { children: ReactNode, modal: ReactNode };
+type Props = { children: ReactNode };
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,14 +12,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  modal,
 }: Props) {
   return (
     <html lang="en">
       <body>
         <div className={styles.container}>
           {children}
-          {modal}
         </div>
       </body>
     </html>
