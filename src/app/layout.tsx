@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { ReactNode } from "react"
 import "./globals.css";
-import styles from './page.module.css';
+import { MSWProvider } from "./_component/MSWComponent";
 
+if (process.env.NEXT_RUNTIME === 'nodejs' && process.env.NODE_ENV !== 'production') {
+  const {server} = require('@/mocks/http')
+  server.listen();
+}
 type Props = { children: ReactNode };
 
 export const metadata: Metadata = {
@@ -16,9 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className={styles.container}>
+        <MSWProvider>
           {children}
-        </div>
+        </MSWProvider>
       </body>
     </html>
   );
