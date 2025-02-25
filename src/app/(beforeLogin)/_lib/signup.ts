@@ -1,5 +1,6 @@
 "use server";
 import { redirect } from "next/navigation";
+import { signIn } from '@/auth';
 
 const onSubmit = async (prevState: { message: string | null }, formData: FormData) => {
     let shouldRedirect = false;
@@ -26,6 +27,12 @@ const onSubmit = async (prevState: { message: string | null }, formData: FormDat
       }
       shouldRedirect = true;
 
+      await signIn("credentials", {
+        username: formData.get('id'),
+        password: formData.get('password'),
+        redirect: false,
+      })
+
     } catch (err) {
       console.log(err);
       return { message : null };
@@ -33,6 +40,7 @@ const onSubmit = async (prevState: { message: string | null }, formData: FormDat
     if(shouldRedirect) {
       redirect('/home');
     }
+    return { message : null };
 }
 
 export default onSubmit;

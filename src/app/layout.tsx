@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { ReactNode } from "react"
 import "./globals.css";
-import { MSWProvider } from "./_component/MSWComponent";
+import { MSWProvider } from "@/app/_component/MSWComponent";
+import AuthSession from "@/app/_component/AuthSession";
 
 if (process.env.NEXT_RUNTIME === 'nodejs' && process.env.NODE_ENV !== 'production') {
   const {server} = require('@/mocks/http')
@@ -21,7 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <MSWProvider>
-          {children}
+          <AuthSession>
+            { children }
+          </AuthSession>
         </MSWProvider>
       </body>
     </html>
