@@ -7,7 +7,7 @@ export const getUserPosts: QueryFunction<Post[], [_1: string, _2: string, string
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/${username}/posts`, {
       next: {
         tags: ['posts', 'users', username],
-      }
+      },
     });
   
     if (!res.ok) {

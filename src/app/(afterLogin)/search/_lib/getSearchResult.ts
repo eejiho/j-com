@@ -1,4 +1,4 @@
-import { QueryFunction } from "@tanstack/query-core";
+import { QueryFunction } from "@tanstack/react-query";
 import { Post } from '@/model/Post';
 
 export const getSearchResult: QueryFunction<Post[], [_1: string, _2: string, searchParams: { q: string, pf?: string, f?: string }]>
@@ -9,8 +9,6 @@ export const getSearchResult: QueryFunction<Post[], [_1: string, _2: string, sea
             next: {
                 tags: ['posts', 'search', searchParams.q],
             },
-            credentials: 'include',
-            cache: 'no-cache',
         });
 
         if(!res.ok) {

@@ -7,7 +7,7 @@ export const getUser: QueryFunction<User[], [_1: string, _2: string]>
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/${username}`, {
       next: {
         tags: ['users', username],
-      }
+      },
     });
   
     if (!res.ok) {

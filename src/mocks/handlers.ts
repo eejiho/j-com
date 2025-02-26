@@ -303,17 +303,7 @@ export const handlers = [
       },
     );
   }),
-  http.get(`${baseUrl}/api/users/:userId/posts/:postId`, ({ request, params }) => {
-    const { userId, postId } = params;
-    return HttpResponse.json({
-      postId: 1,
-      User: User[0],
-      content: `${1} ${userId} 의 게시글 ${postId}의 내용`,
-      Images: [{imageId: 1, link: faker.image.urlLoremFlickr()}],
-      createdAt: generateDate(),
-    })
-  }),
-  http.get(`${baseUrl}/api/users/:userId/posts/:postId/comments`, ({ request, params }) => {
+  http.get(`${baseUrl}/api/posts/:postId/comments`, ({ request, params }) => {
     const { userId, postId } = params;
     const cursor = 0;
     return HttpResponse.json(
@@ -321,14 +311,14 @@ export const handlers = [
         {
           postId: cursor + 1,
           User: User[0],
-          content: `${cursor + 1} ${userId} 의 게시글 ${postId}의 답글`,
+          content: `${cursor + 1} 게시글 ${postId}의 답글`,
           Images: [{imageId: 1, link: faker.image.urlLoremFlickr()}],
           createdAt: generateDate(),
         },
         {
           postId: cursor + 2,
           User: User[0],
-          content: `${cursor + 2} ${userId} 의 게시글 ${postId}의 답글`,
+          content: `${cursor + 2} 게시글 ${postId}의 답글`,
           Images: [
             {imageId: 1, link: faker.image.urlLoremFlickr()},
             {imageId: 2, link: faker.image.urlLoremFlickr()},
@@ -338,14 +328,14 @@ export const handlers = [
         {
           postId: cursor + 3,
           User: User[0],
-          content: `${cursor + 3} ${userId} 의 게시글 ${postId}의 답글`,
+          content: `${cursor + 3} 게시글 ${postId}의 답글`,
           Images: [],
           createdAt: generateDate(),
         },
         {
           postId: cursor + 4,
           User: User[0],
-          content: `${cursor + 4} ${userId} 의 게시글 ${postId}의 답글`,
+          content: `${cursor + 4} 게시글 ${postId}의 답글`,
           Images: [
             {imageId: 1, link: faker.image.urlLoremFlickr()},
             {imageId: 2, link: faker.image.urlLoremFlickr()},
@@ -357,7 +347,7 @@ export const handlers = [
         {
           postId: cursor + 5,
           User: User[0],
-          content: `${cursor + 5} ${userId} 의 게시글 ${postId}의 답글`,
+          content: `${cursor + 5} 게시글 ${postId}의 답글`,
           Images: [
             {imageId: 1, link: faker.image.urlLoremFlickr()},
             {imageId: 2, link: faker.image.urlLoremFlickr()},

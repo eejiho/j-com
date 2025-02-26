@@ -24,5 +24,5 @@ export default function UserPosts({ username }: Props) {
             return <Post key={post.postId} post={post} />
         })
     }
-
+    return null;
 }
