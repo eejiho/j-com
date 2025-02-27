@@ -1,9 +1,10 @@
 type Props = {pageParam?: number}
 export async function getFollowingPosts({pageParam}: Props) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/followingPosts?cursor=${pageParam}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/followings?cursor=${pageParam}`, {
       next: {
         tags: ['posts', 'followings'],
       },
+      credentials: 'include',
       cache: 'force-cache'
     });
   
