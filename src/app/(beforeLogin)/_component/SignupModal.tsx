@@ -23,8 +23,11 @@ function showMessage(message: string) {
   if(message === 'user_exists') {
     return '아이디가 없습니다.';
   }
+  if(message === 'nickname must be a string') {
+    return '닉네임이 필요합니다.';
+  }
 
-  return '';
+  return message;
 }
 export default function SignupModal() {
   const [state, formAction] = useActionState(onSubmit, { message: null });
@@ -43,25 +46,25 @@ export default function SignupModal() {
               <div className={style.inputDiv}>
                 <label className={style.inputLabel} htmlFor="id">아이디</label>
                 <input id="id" name="id" className={style.input} type="text" placeholder=""
-                  required
+                  required defaultValue={state.id as string}
                 />
               </div>
               <div className={style.inputDiv}>
                 <label className={style.inputLabel} htmlFor="name">닉네임</label>
                 <input id="name" name="name" className={style.input} type="text" placeholder=""
-                  required
+                  required defaultValue={state.nickname as string}
                 />
               </div>
               <div className={style.inputDiv}>
                 <label className={style.inputLabel} htmlFor="password">비밀번호</label>
                 <input id="password" name="password" className={style.input} type="password" placeholder=""
-                  required
+                  required defaultValue={state.password as string}
                 />
               </div>
               <div className={style.inputDiv}>
                 <label className={style.inputLabel} htmlFor="image">프로필</label>
                 <input id="image" name="image" className={style.input} type="file" accept="image/*"
-                  required
+                  required defaultValue={state.image as string}
                 />
               </div>
             </div>

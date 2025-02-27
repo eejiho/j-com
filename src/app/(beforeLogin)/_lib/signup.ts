@@ -16,15 +16,26 @@ const onSubmit = async (prevState: { message: string | null }, formData: FormDat
     if(!formData.get('image')) {
       return { message : 'no_image' };
     }
+    formData.set('nickname', formData.get('name') as string);
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users`, {
         method: 'post',
         body: formData,
-        credentials: 'include',
+        credentials: 'include', // 넣어줘야 쿠키가 전달이 됨
       })
       if(response.status === 403) {
         return { message : 'user_exists' };
+      } else if (response.status === 400) {
+        return { 
+          message: (await response.json()).data[0],
+          id: formData.get('id'),
+          nickname: formData.get('nickname'),
+          password: formData.get('password'),
+          image: formData.get('image')
+        }
       }
+      
       shouldRedirect = true;
 
       await signIn("credentials", {
