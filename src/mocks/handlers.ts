@@ -6,6 +6,7 @@ const User = [
   {id: 'leoturtle', nickname: '레오', image: faker.image.avatar()},
 ]
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 function generateDate() {
   const lastWeek = new Date(Date.now());
@@ -44,10 +45,11 @@ export const handlers = [
       },
     });
   }),
-  http.get(`${baseUrl}/api/postRecommends`, ({ request }) => {
+  http.get(`${baseUrl}/api/postRecommends`, async({ request }) => {
     const url = new URL(request.url);
     const cursor = parseInt(url.searchParams.get('cursor') as string) || 0;
 
+    await delay(1000);
     return HttpResponse.json(
       [
         {
@@ -100,10 +102,11 @@ export const handlers = [
       ]
     )
   }),
-  http.get(`${baseUrl}/api/followingPosts`, ({ request }) => {
+  http.get(`${baseUrl}/api/followingPosts`, async ({ request }) => {
     const url = new URL(request.url);
     const cursor = parseInt(url.searchParams.get('cursor') as string) || 0;
 
+    await delay(1000);
     return HttpResponse.json(
       [
         {

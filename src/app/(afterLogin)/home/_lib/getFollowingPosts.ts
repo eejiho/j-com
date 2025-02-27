@@ -3,7 +3,8 @@ export async function getFollowingPosts({pageParam}: Props) {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/followingPosts?cursor=${pageParam}`, {
       next: {
         tags: ['posts', 'followings'],
-      }
+      },
+      cache: 'force-cache'
     });
   
     if (!res.ok) {
