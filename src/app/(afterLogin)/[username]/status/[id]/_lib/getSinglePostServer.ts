@@ -1,4 +1,6 @@
-export const getSinglePost = async ({ queryKey }: {queryKey: [string, string]}) => {
+import { cookies } from "next/headers";
+
+export const getSinglePostServer = async ({ queryKey }: {queryKey: [string, string]}) => {
     const [_1, id] = queryKey;
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${id}`, {
       next: {
@@ -6,7 +8,7 @@ export const getSinglePost = async ({ queryKey }: {queryKey: [string, string]}) 
         revalidate: 3600,
       },
       credentials: 'include',
-      cache: 'force-cache'
+      headers: {Cookie: (await cookies()).toString()}
     });
   
     if (!res.ok) {

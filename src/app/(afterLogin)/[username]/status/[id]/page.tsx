@@ -4,12 +4,31 @@ import CommentForm from "./_component/CommentForm";
 import SinglePost from "./_component/SinglePost";
 import { dehydrate, QueryClient } from "@tanstack/query-core";
 import { getSinglePost } from "./_lib/getSinglePost";
+import { getSinglePostServer } from "./_lib/getSinglePostServer";
 import { getComments } from "./_lib/getComments";
 import { HydrationBoundary } from "@tanstack/react-query";
 import Comments from "./_component/Comments";
+import { User } from "@/model/User";
+import { getUserServer } from "../../_lib/getUserServer";
+import { Post } from "@/model/Post";
 
 type Props = {
-  params: Promise<{ id: string}>
+  params: Promise<{ id: string, username: string }>
+}
+export async function generateMetadata({params}: Props) {
+  const { username, id } = await params;
+  const [user, post]: [User, Post] = await Promise.all([
+    getUserServer({ queryKey: ["users", username] }),
+    getSinglePostServer({ queryKey: ["posts", id] }) 
+  ]);
+  return {
+    title: `Z에서 ${user.nickname} 님 : ${post.content}`,
+    dsecription: post.content,
+    openGraph: {
+      images: '',
+      title: '',
+    }
+  }
 }
 export default async function Page(props: Props) {
   const {id} = await props.params;

@@ -3,9 +3,19 @@ import style from './search.module.css';
 import SearchForm from "@/app/(afterLogin)/_component/SearchForm";
 import Tab from "./_component/Tab";
 import SearchResult from "./_component/SearchResult";
+import { Metadata, ResolvingMetadata } from "next";
 
 type Props = {
   searchParams: Promise<{ q: string, f?: string, pf?: string }>;
+  parent: ResolvingMetadata,
+}
+
+export async function generateMetadata({searchParams, parent}: Props): Promise<Metadata> {
+  const {q} = await searchParams;
+  return {
+    title: `${q} - 검색 / Z`,
+    description: `${q} - 검색 / Z`
+  }
 }
 export default async function Search({ searchParams } : Props) {
   const query = await searchParams;
