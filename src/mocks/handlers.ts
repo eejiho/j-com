@@ -217,10 +217,9 @@ export const handlers = [
     )
   }),
   http.get(`${baseUrl}/api/users/:userId/posts`, ({ request, params }) => {
-    // const url = new URL(request.url)
-    // const cursor = parseInt(url.searchParams.get('cursor') as string) || 0
+    const url = new URL(request.url)
+    const cursor = parseInt(url.searchParams.get('cursor') as string) || 0
     const { userId } = params;
-    const cursor = 0;
     return HttpResponse.json(
       [
         {

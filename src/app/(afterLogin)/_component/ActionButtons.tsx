@@ -13,9 +13,9 @@ type Props = {
 export default function ActionButtons({ white, post } : Props) {
     const queryClient = useQueryClient();
     const { data: session } = useSession();
-    const commented = !!post.Comments.find((v) => v.userId === session?.user?.email);
-    const reposted = !!post.Reposts.find((v) => v.userId === session?.user?.email);
-    const liked = !!post.Hearts.find((v) => v.userId === session?.user?.email);
+    const commented = !!post.Comments?.find((v) => v.userId === session?.user?.email);
+    const reposted = !!post.Reposts?.find((v) => v.userId === session?.user?.email);
+    const liked = !!post.Hearts?.find((v) => v.userId === session?.user?.email);
     const { postId } = post;
 
     const heart = useMutation({
@@ -251,7 +251,7 @@ export default function ActionButtons({ white, post } : Props) {
                     </g>
                 </svg>
                 </button>
-                <div className={style.count}>{post._count.Comments || ''}</div>
+                <div className={style.count}>{post._count?.Comments || ''}</div>
             </div>
             <div className={cx(style.repostButton, reposted && style.reposted, white && style.white)}>
                 <button onClick={onClickRepost}>
@@ -262,7 +262,7 @@ export default function ActionButtons({ white, post } : Props) {
                     </g>
                 </svg>
                 </button>
-                <div className={style.count}>{post._count.Reposts || ''}</div>
+                <div className={style.count}>{post._count?.Reposts || ''}</div>
             </div>
             <div className={cx([style.heartButton, liked && style.liked, white && style.white])}>
                 <button onClick={onClickHeart}>
@@ -273,7 +273,7 @@ export default function ActionButtons({ white, post } : Props) {
                     </g>
                 </svg>
                 </button>
-                <div className={style.count}>{post._count.Hearts || ''}</div>
+                <div className={style.count}>{post._count?.Hearts || ''}</div>
             </div>
         </div>
     );
