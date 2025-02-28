@@ -8,6 +8,7 @@ export const getUser: QueryFunction<User[], [_1: string, _2: string]>
       next: {
         tags: ['users', username],
       },
+      credentials: 'include',
     });
   
     if (!res.ok) {
@@ -16,4 +17,3 @@ export const getUser: QueryFunction<User[], [_1: string, _2: string]>
   
     return res.json();
   }
-  

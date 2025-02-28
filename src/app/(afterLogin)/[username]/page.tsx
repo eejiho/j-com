@@ -1,9 +1,10 @@
 import style from './profile.module.css';
-import { getUser } from './_lib/getUser';
+import { getUserServer } from './_lib/getUserServer';
 import { getUserPosts } from './_lib/getUserPosts';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import UserPosts from './_component/UserPosts';
 import UserInfo from './_component/UserInfo';
+import { auth } from '@/auth';
 //import BackButton from "@/app/(afterLogin)/_component/BackButton";
 
 type Props = {
@@ -11,15 +12,16 @@ type Props = {
 }
 export default async function Profile({ params }: Props) {
   const { username } = await params;
+  const session = await auth();
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({queryKey: ['users', username], queryFn: getUser})
+  await queryClient.prefetchQuery({queryKey: ['users', username], queryFn: getUserServer})
   await queryClient.prefetchQuery({queryKey: ['posts', 'users', username], queryFn: getUserPosts})
   const dehydratedState = dehydrate(queryClient);
 
   return (
     <main className={style.main}>
       <HydrationBoundary state={dehydratedState}>
-        <UserInfo username={username} />
+        <UserInfo username={username} session={session}/>
         <div>
           <UserPosts username={username} />
         </div>

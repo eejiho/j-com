@@ -6,14 +6,15 @@ import { User } from "@/model/User";
 import { getUser } from '../_lib/getUser';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import cx from 'classnames';
-import { useSession } from "next-auth/react";
 import { MouseEventHandler } from "react";
+import { Session } from "next-auth";
 
 type Props = {
     username: string;
+    session: Session | null;
 }
 
-export default function UserInfo({ username }: Props) {
+export default function UserInfo({ username, session }: Props) {
     const { data: user, error } = useQuery<User, Object, User, [_1: string, _2: string]>({
         queryKey: ['users', username], 
         queryFn: getUser,
@@ -21,10 +22,9 @@ export default function UserInfo({ username }: Props) {
         gcTime: 300 * 1000,
     });
 
-    const { data: session } = useSession();
     const queryClient = useQueryClient();
 
-    const followed = user.Followers?.find((v) => v.userId === session?.user?.email);
+    const followed = user.Followers?.find((v) => v.id === session?.user?.email);
 
     const follow = useMutation({
         mutationFn: (userId: string) => {
@@ -41,7 +41,7 @@ export default function UserInfo({ username }: Props) {
                     const shallow = [...value];
                     shallow[index] = {
                         ...shallow[index],
-                        Followers: [{ userId: session?.user?.email as string }],
+                        Followers: [{ id: session?.user?.email as string }],
                         _count: {
                             ...shallow[index]._count,
                             Followers: shallow[index]._count?.Followers + 1
@@ -55,7 +55,7 @@ export default function UserInfo({ username }: Props) {
             if(value2) {
                 const shallow = {
                     ...value2,
-                    Followers: [{ userId: session?.user?.email as string }],
+                    Followers: [{ id: session?.user?.email as string }],
                     _count: {
                         ...value2._count,
                         Followers: value2._count?.Followers + 1
@@ -72,7 +72,7 @@ export default function UserInfo({ username }: Props) {
                     const shallow = [...value];
                     shallow[index] = {
                         ...shallow[index],
-                        Followers: shallow[index].Followers.filter((v) => v.userId !== session?.user?.email),
+                        Followers: shallow[index].Followers.filter((v) => v.id !== session?.user?.email),
                         _count: {
                             ...shallow[index]._count,
                             Followers: shallow[index]._count?.Followers - 1
@@ -86,7 +86,7 @@ export default function UserInfo({ username }: Props) {
             if(value2) {
                 const shallow = {
                     ...value2,
-                    Followers: value2.Followers.filter((v) => v.userId !== session?.user?.email),
+                    Followers: value2.Followers.filter((v) => v.id !== session?.user?.email),
                     _count: {
                         ...value2._count,
                         Followers: value2._count?.Followers - 1
@@ -112,7 +112,7 @@ export default function UserInfo({ username }: Props) {
                     const shallow = [...value];
                     shallow[index] = {
                         ...shallow[index],
-                        Followers: shallow[index].Followers.filter((v) => v.userId !== session?.user?.email),
+                        Followers: shallow[index].Followers.filter((v) => v.id !== session?.user?.email),
                         _count: {
                             ...shallow[index]._count,
                             Followers: shallow[index]._count?.Followers - 1
@@ -126,7 +126,7 @@ export default function UserInfo({ username }: Props) {
             if(value2) {
                 const shallow = {
                     ...value2,
-                    Followers: value2.Followers.filter((v) => v.userId !== session?.user?.email),
+                    Followers: value2.Followers.filter((v) => v.id !== session?.user?.email),
                     _count: {
                         ...value2._count,
                         Followers: value2._count?.Followers - 1
@@ -143,7 +143,7 @@ export default function UserInfo({ username }: Props) {
                     const shallow = [...value];
                     shallow[index] = {
                         ...shallow[index],
-                        Followers: [{ userId: session?.user?.email as string }],
+                        Followers: [{ id: session?.user?.email as string }],
                         _count: {
                             ...shallow[index]._count,
                             Followers: shallow[index]._count?.Followers + 1

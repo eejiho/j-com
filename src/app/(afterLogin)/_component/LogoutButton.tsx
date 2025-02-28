@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
 import style from './logoutButton.module.css';
 import {signOut} from "next-auth/react";
 import { Session } from 'next-auth';
@@ -9,13 +8,9 @@ type Props = {
     me: Session | null
 }
 export default function LogoutButton({ me }: Props) {
-    const router = useRouter();
 
     const onLogout = () => {
-        signOut({redirect: false})
-            .then(() => {
-                router.replace('/');        
-        })
+        signOut({callbackUrl: '/'});
     }
 
     if(!me?.user) {
