@@ -5,7 +5,6 @@ export async function getFollowingPosts({pageParam}: Props) {
         tags: ['posts', 'followings'],
       },
       credentials: 'include',
-      cache: 'force-cache'
     });
   
     if (!res.ok) {

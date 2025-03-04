@@ -5,7 +5,6 @@ export async function getPostRecommends({pageParam}: Props) {
       tags: ['posts', 'recommends'],
     },
     credentials: 'include',
-    cache: 'force-cache',
   });
 
   if (!res.ok) {

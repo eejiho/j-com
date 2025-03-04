@@ -6,7 +6,6 @@ export const getSinglePost = async ({ queryKey }: {queryKey: [string, string]}) 
         revalidate: 3600,
       },
       credentials: 'include',
-      cache: 'force-cache'
     });
   
     if (!res.ok) {
