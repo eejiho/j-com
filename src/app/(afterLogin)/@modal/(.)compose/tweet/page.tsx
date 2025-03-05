@@ -14,7 +14,7 @@ export default function TweetModal() {
     const { data: me } = useSession();
     const [content, setContent] = useState('');
     const [preview, setPreview] = useState<Array<{ dataUrl: string, file: File } | null>>([]);
-    const imageRef = useRef<HTMLImageElement>(null);
+    const imageRef = useRef<HTMLInputElement>(null);
     const queryClient = useQueryClient();
     const modalStore = useModalStore();
     const router = useRouter();
@@ -40,7 +40,7 @@ export default function TweetModal() {
               body: formData
           });
       },
-      async onSuccess(response, variable) {
+      async onSuccess(response) {
         const newPost = await response.json();
         setContent('');
         setPreview([]);
@@ -96,7 +96,7 @@ export default function TweetModal() {
             body: formData
         });
       },
-      async onSuccess(response, variable) {
+      async onSuccess(response) {
         const newPost = await response.json();
         setContent('');
         setPreview([]);

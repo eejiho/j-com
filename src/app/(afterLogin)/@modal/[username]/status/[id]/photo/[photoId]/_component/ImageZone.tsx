@@ -10,7 +10,7 @@ type Props = {
 }
 
 export default function ImageZone({ id }: Props) {
-    const { data: post } = useQuery<IPost, Object, IPost, [_1: string, _2: string]>({
+    const { data: post } = useQuery<IPost, object, IPost, [_1: string, _2: string]>({
         queryKey: ['posts', id], 
         queryFn: getSinglePost,
         staleTime: 60 * 1000, // fresh -> stale
@@ -18,11 +18,11 @@ export default function ImageZone({ id }: Props) {
     });
     return (
         <div className={style.imageZone}>
-            <img src={post.Images[0].link} alt={post.content} />
-            <div className={style.image} style={{backgroundImage: `url(${post.Images[0].link})`}} />
+            <img src={post?.Images[0].link} alt={post?.content} />
+            <div className={style.image} style={{backgroundImage: `url(${post?.Images[0].link})`}} />
             <div className={style.buttonZone}>
             <div className={style.buttonInner}>
-                <ActionButtons white post={post} />
+                <ActionButtons white post={post ?? ({} as IPost)} />
             </div>
             </div>
         </div>
