@@ -1,21 +1,28 @@
-import { faker } from "@faker-js/faker";
 import style from './chatRoom.module.css';
-import Link from "next/link";
-import BackButton from "../../_component/BackButton";
 import cx from 'classnames';
 import dayjs from 'dayjs';
 import relativeTime from "dayjs/plugin/relativeTime";
 import 'dayjs/locale/ko';
+import MessageForm from "./_component/MessageForm";
+import { getUserServer } from "../../[username]/_lib/getUserServer";
+import { QueryClient } from "@tanstack/react-query";
+import { auth } from '@/auth';
+import { UserInfo } from './_component/UserInfo';
 
 dayjs.locale('ko');
 dayjs.extend(relativeTime)
 
-export default function ChatRoom() {
-    const user = {
-        id: 'hero',
-        nickname: '영웅',
-        image: faker.image.avatar()
+type Props = {
+    params: { room: string }
+}
+export default async function ChatRoom({ params }: Props) {
+    const session = await auth();
+    const ids = params.room.split('-').filter((v) => v !== session?.user?.email);
+    if(!ids[0]) {
+        return null;
     }
+    const queryClient = new QueryClient();
+    await queryClient.prefetchQuery({queryKey: ['users', ids[0]], queryFn: getUserServer})
 
     const messages = [
         {messageId: 1, roomId: 123, id: 'zerohch0',  content: '안녕하세요.', createdAt: new Date()},
@@ -24,15 +31,7 @@ export default function ChatRoom() {
 
     return (
         <main className={style.main}>
-            <div className={style.header}>
-                <BackButton />
-                <div><h2>{user.nickname}</h2></div>
-            </div>
-            <Link href={user.nickname} className={style.userInfo}>
-                <img src={user.image} alt={user.id} />
-                <div><b>{user.nickname}</b></div>
-                <div>@{user.id}</div>
-            </Link>
+            <UserInfo id={ids[0]} />
             <div className={style.list}>
                 {messages.map((m) => {
                     if(m.id === 'zerohch0') { // 내 메시지면
@@ -55,6 +54,7 @@ export default function ChatRoom() {
                     );
                 })}
             </div>
+            <MessageForm />
         </main>
     )
 }
