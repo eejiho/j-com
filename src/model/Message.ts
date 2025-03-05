@@ -1,8 +1,8 @@
-import { User } from "./User";
-
 export interface Message {
+    messageId: number,
+    senderId: string,
+    receiverId: string,
     room: string,
-    Receiver: User,
     content: string,
     createdAt: Date
 }

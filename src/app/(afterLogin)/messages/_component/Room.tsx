@@ -5,6 +5,7 @@ import {useRouter} from "next/navigation";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { Room } from '@/model/Room';
 import 'dayjs/locale/ko';
+import { useSession } from "next-auth/react";
 dayjs.locale('ko');
 dayjs.extend(relativeTime)
 type Props = {
@@ -15,16 +16,20 @@ export default function RoomComponent({ room }: Props) {
   const onClick =() => {
     router.push(`/messages/${room.room}`);
   };
+  const {data: session} = useSession();
+
+  const user = room.Receiver.id === session?.user?.email ? room.Sender : room.Receiver;
+
   return (
     <div className={style.room} onClickCapture={onClick}>
       <div className={style.roomUserImage}>
-        <img src={room.Receiver.image} alt=""/>
+        <img src={user.image} alt=""/>
       </div>
       <div className={style.roomChatInfo}>
         <div className={style.roomUserInfo}>
-          <b>{room.Receiver.nickname}</b>
+          <b>{user.nickname}</b>
           &nbsp;
-          <span>@{room.Receiver.id}</span>
+          <span>@{user.id}</span>
           &nbsp;
           ·
           &nbsp;
