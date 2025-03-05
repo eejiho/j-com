@@ -1,22 +1,46 @@
 "use client";
-import { ChangeEventHandler, FormEventHandler, useState } from 'react';
+import { ChangeEventHandler, FormEventHandler, useEffect, useState } from 'react';
 import style from './messageForm.module.css';
 import TextareaAutosize from 'react-textarea-autosize';
+import useSocket from '../_lib/useSocket';
+import { useSession } from 'next-auth/react';
 
-export default function MessageForm() {
+interface Props {
+    id: string
+}
+
+export default function MessageForm({ id }: Props) {
     const [content, setContent] = useState('');
+    const [socket] = useSocket();
+    const { data: session } = useSession();
     const onChangeContent: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
         setContent(e.target.value);
     }
 
     const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
+        socket?.emit('sendMessage', {
+            senderId: session?.user?.email,
+            receiverId: id,
+            content,
+        });
+        // 리액트 쿼리 데이터에 추가
         setContent('');
     }
+
+    useEffect(() => {
+        socket?.on('receiveMessage', (data) => {
+            console.log('data', data);
+        });
+        return () => {
+            socket?.off('receiveMessage');
+        }
+    }, [socket]);
+
     return (
         <div className={style.formZone}>
             <form className={style.form} onSubmit={onSubmit}>
-                <TextareaAutosize onChange={onChangeContent} />
+                <TextareaAutosize value={content} onChange={onChangeContent} />
                 <button className={style.submitButton} type="submit" disabled={!content}>
                     <svg viewBox="0 0 24 24" width={18} aria-hidden="true"
                         className="r-4qtqp9 r-yyyyoo r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-z80fyv r-19wmn03">

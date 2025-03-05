@@ -1,6 +1,5 @@
 "use client";
 import style from "@/app/(afterLogin)/messages/message.module.css";
-import {faker} from "@faker-js/faker";
 import dayjs from "dayjs";
 import {useRouter} from "next/navigation";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -19,7 +18,7 @@ export default function RoomComponent({ room }: Props) {
   return (
     <div className={style.room} onClickCapture={onClick}>
       <div className={style.roomUserImage}>
-        <img src={faker.image.avatar()} alt=""/>
+        <img src={room.Receiver.image} alt=""/>
       </div>
       <div className={style.roomChatInfo}>
         <div className={style.roomUserInfo}>
